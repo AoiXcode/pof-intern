@@ -1,0 +1,8 @@
+html, body{
+  margin: 0;
+  width: 100% !important;
+  height: 100% !important;
+  font-family: 'Open Sans', sans-serif !important;
+  background-color: #f0f0f0;
+  color: #333;
+}

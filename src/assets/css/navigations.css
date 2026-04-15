@@ -1,0 +1,47 @@
+/*Top*/
+.top{
+  display: flex;
+  justify-content: space-between;
+  padding: 4px;
+  font-size: 12px;
+}
+/*Bot*/
+.botom-container {
+  position: fixed;   /* 🔥 stays at bottom */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background: #fff;
+  padding: 10px 0;
+
+  box-shadow: 0 -5px 10px rgba(0,0,0,0.3);
+    padding: 4px;
+}
+/* nav layout */
+.nav-bottom {
+  display: flex;
+  justify-content: space-around; /* evenly spaced icons */
+  align-items: center;
+  
+}
+
+/* icons */
+.nav-bottom img {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+/* hover effect */
+.nav-bottom img:hover {
+  transform: scale(1.2);
+  filter: brightness(1.5);
+}
+
+/* active click effect (optional) */
+.nav-bottom img:active {
+  transform: scale(0.9);
+}

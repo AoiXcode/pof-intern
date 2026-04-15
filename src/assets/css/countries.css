@@ -1,0 +1,56 @@
+.countries {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #fff;
+  padding: 10px 10px;
+  border-radius: 50px;
+  width: 100px;
+  cursor: pointer;
+  font-size: 12px;
+  position: relative;
+  color: black;
+}
+.countries-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* Arrow */
+.arrow {
+  font-size: 10px;
+}
+
+/* Dropdown container */
+.dropdown {
+ position: absolute;
+  top: 45px;
+  left: 0;
+  background: rgb(255, 255, 255);
+  border-radius: 10px;
+  padding: 5px 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  min-width: 120px;
+  z-index: 10;
+  color: #000000;
+}
+
+/* Each item */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.dropdown-item.active {
+  background: #ffe4ec;   /* light pink (matches your theme) */
+  color: #d63384;        /* darker pink text */
+  font-weight: 600;
+}
+
+/* Hover effect */
+/* .dropdown-item:hover {
+  background: #f5f5f5;
+} */

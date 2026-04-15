@@ -1,0 +1,45 @@
+/* main container */
+.prevention {
+  padding: 15px;
+  justify-content: space-between;
+}
+
+/* title */
+.prevention-text {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* list container */
+.prevention-list {
+  justify-content: space-between;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* each item */
+.home-prevention-1 {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  
+}
+
+/* image */
+.home-prevention-1 img {
+    
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50px;
+}
+
+/* text */
+.home-prevention-1 div {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 8px;
+}

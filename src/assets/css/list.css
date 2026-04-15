@@ -1,0 +1,36 @@
+.list-main-container{
+    padding: 12px;
+}
+.list-container-1{
+    display: flex;
+    justify-content: flex-end;
+}
+.list-container-1> button{
+    border: none;
+    padding: 8px 16px;
+    border-radius: 12px;
+    background-color: wheat;
+    font-size: 16px;
+    font-weight: 500;
+}
+.list-container-2{
+    display: flex;
+}
+.list-container-2> div:nth-child(1){
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.list-container-2> div:nth-child(2){
+    width: 100%;
+    margin-top: 12px;
+}
+.list-container-2> div:nth-child(2)>*{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: antiquewhite;
+    padding: 12px 0;
+    font-size: 14px;
+}
+
