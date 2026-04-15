@@ -13,24 +13,98 @@
     font-size: 16px;
     font-weight: 500;
 }
-.list-container-2{
-    display: flex;
-}
-.list-container-2> div:nth-child(1){
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-.list-container-2> div:nth-child(2){
-    width: 100%;
-    margin-top: 12px;
-}
-.list-container-2> div:nth-child(2)>*{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    background-color: antiquewhite;
-    padding: 12px 0;
-    font-size: 14px;
+.list-container-2 {
+  display: flex;
+  flex-direction: column;
 }
 
+/* HEADER */
+.list-container-2 > div:nth-child(1) {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* ROW CONTAINER */
+.list-container-2 > div:nth-child(2) {
+  width: 100%;
+  margin-top: 12px;
+}
+
+/* EACH ROW */
+.list-container-2 > div:nth-child(2) > * {
+  display: flex;
+  justify-content: space-between;
+  background-color: antiquewhite;
+  padding: 12px 0;
+  font-size: 14px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+.form-main-container {
+  padding: 20px;
+  background: #f5f6fa;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* TITLE */
+.form-container-1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* FORM BOX */
+.form-container-2 {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* EACH INPUT GROUP */
+.form-container-2 > div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+/* LABEL */
+.form-container-2 label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+/* INPUT + SELECT */
+.form-container-2 input,
+.form-container-2 select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+/* FOCUS EFFECT */
+.form-container-2 input:focus,
+.form-container-2 select:focus {
+  border-color: #5a54c7;
+  box-shadow: 0 0 0 2px rgba(90,84,199,0.2);
+}
+
+/* OPTIONAL SUBMIT BUTTON (if you add later) */
+.form-container-2 button {
+  margin-top: 10px;
+  padding: 12px;
+  border: none;
+  border-radius: 25px;
+  background: #5a54c7;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}

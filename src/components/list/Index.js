@@ -1,13 +1,20 @@
 import { useState } from "react"
+import { useHistory } from "react-router-dom"
 import { Bottom } from "../navigations/Bottom"
 import "../../assets/css/list.css"
 
 export const List= ()=>{
+    const history = useHistory()
     const [lcases, setlcases] = useState([{name:'john', case:'Recovered', city:'Taguig City'}])
+    
+    const acHandler=() =>{
+        history.push('/list/form')
+    }
+
     return (
     <div className="list-main-container">
         <div className="list-container-1">
-            <button>Add Case</button>
+            <button onClick={acHandler}>Add Case</button>
         </div>
         <div className="list-container-2">
             <div>
