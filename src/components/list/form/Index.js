@@ -1,11 +1,15 @@
 import { Bottom } from "../../navigations/Bottom"
-export const Form =({form, setForm})=>{
+export const Form =({form, setForm, lcases, setLcases})=>{
     const inputHandler =(e) =>{
         const {name, value} = e.target
         const f ={...form}
         f.inputs[name].value =value
         
         setForm(f)
+    }
+    const submitHandler =()=>{
+        setLcases([...lcases, {name: form.inputs.name.value, case: form.inputs.case.value, city:
+            form.inputs.city.value}])
     }
     return(
         <div className="form-main-container">
@@ -29,15 +33,15 @@ export const Form =({form, setForm})=>{
                 </div>
                  <div>
                     <label>City</label>
-                    <select name="case" value={form.inputs.city.value} onChange={inputHandler}>
-                        <option value={1}>Makati</option>
-                        <option value={2}>Mandaluyong</option>
-                        <option value={3}>Manila</option>
-                        <option value={4}>Pasig</option>
-                        <option value={5}>Taguig</option>
+                    <select name="city" value={form.inputs.city.value} onChange={inputHandler}>
+                        <option value="Makati">Makati</option>
+                        <option value="Mandaluyong">Mandaluyong</option>
+                        <option value="Manila">Manila</option>
+                        <option value="Pasig">Pasig</option>
+                        <option value="Taguig">Taguig</option>
                     </select>
                 </div>
-                 <button>Save Case</button>
+                 <button onClick={submitHandler}>Save Case</button>
             </div>
             <Bottom/>
         </div>

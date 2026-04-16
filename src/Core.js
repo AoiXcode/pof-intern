@@ -5,9 +5,10 @@ import {Home} from "./components/home/Index";
 import {Statistics} from "./components/statistics/Index";
 import {List} from "./components/list/Index"
 import {Form} from "./components/list//form/Index"
-
+import "./assets/css/list.css"
 
 const Core= () => {
+    const [lcases, setLcases] = useState([])
     const [form, setForm] = useState({
     method: 'create', 
     submitted: false,
@@ -17,8 +18,8 @@ const Core= () => {
     },
     inputs: {
       name: { value: '', stat: false, msg: '' },
-      case: { value: 0, stat: false, msg: '' },
-      city: { value: 0, stat: false, msg: '' },
+      case: { value: '', stat: false, msg: '' },
+      city: { value: '', stat: false, msg: '' },
     }
   });
 return(
@@ -27,8 +28,8 @@ return(
            <Switch>
               <Route exact path="/" render ={(v) => <Home{...v}/>}/>
               <Route exact path="/statistics" render ={(v) => <Statistics{...v} />}/>
-              <Route exact path="/list" render ={(v) => <List{...v} form={form} setForm={setForm}/>}/>
-               <Route exact path="/list/form" render ={(v) => <Form{...v} form={form} setForm={setForm}/>}/>
+              <Route exact path="/list" render ={(v) => <List{...v} form={form} setForm={setForm} lcases={lcases} setLcases={setLcases}/>}/>
+               <Route exact path="/list/form" render ={(v) => <Form{...v} form={form} setForm={setForm} lcases={lcases} setLcases={setLcases}/>}/>
            </Switch>
         </Router>
         {/* <Home/>

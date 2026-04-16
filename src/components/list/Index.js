@@ -1,11 +1,10 @@
-import { useState } from "react"
 import { useHistory } from "react-router-dom"
 import { Bottom } from "../navigations/Bottom"
 import "../../assets/css/list.css"
 
-export const List= ()=>{
+export const List= ({lcases})=>{
     const history = useHistory()
-    const [lcases, setlcases] = useState([{name:'john', case:'Recovered', city:'Taguig City'}])
+    
     
     const acHandler=() =>{
         history.push('/list/form')
@@ -31,11 +30,14 @@ export const List= ()=>{
                     {
                        lcases !== null? (
                         lcases.length !== 0?(
-                            <div>
-                                 <div>John Doe</div>
-                                <div>Recovered</div>
-                                <div>Taguig</div>
-                            </div>
+                            lcases.map((v, k) => (
+                              <div>
+                                <div>{v.name}</div>
+                                <div>{v.case}</div>
+                                <div>{v.city}</div>
+                            </div>      
+                            ))
+                            
                         ) :(
                             <div>No record Found</div>
                         )
