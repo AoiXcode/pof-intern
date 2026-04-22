@@ -1,22 +1,29 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom";
 import house from "../../assets/images/house.svg";
 import stats from "../../assets/images/stats.svg";
 import add from "../../assets/icons/add.svg";
-import "../../assets/css/navigations.css"
+import "../../assets/css/navigations.css";
 
+export const Bottom = () => {
+  const location = useLocation();
 
-export const Bottom =()=>{
-    return(
-        <div className="botom-container">
-            <div className="nav-bottom">
-                    <div>
-                         <Link to ="/"><img src={house} alt="icon" /></Link>
-                    </div>
-                       <Link to ="/statistics"><img src={stats} alt="icon" /></Link>
-                    <div>
-                         <Link to ="/list"><img src={add} alt="icon" /></Link>
-                    </div>
-            </div>
-        </div>
-    )
-}
+  return (
+    <div className="botom-container">
+      <div className="nav-bottom">
+
+        <Link to="/" className={`nav-item ${location.pathname === "/" ? "active" : ""}`}>
+          <img src={house} alt="home" />
+        </Link>
+
+        <Link to="/statistics" className={`nav-item ${location.pathname === "/statistics" ? "active" : ""}`}>
+          <img src={stats} alt="stats" />
+        </Link>
+
+        <Link to="/list" className={`nav-item ${location.pathname === "/list" ? "active" : ""}`}>
+          <img src={add} alt="list" />
+        </Link>
+
+      </div>
+    </div>
+  );
+};

@@ -4,6 +4,7 @@ import text from "../../../assets/icons/text.svg";
 import phone from "../../../assets/icons/phone.svg";
 
 export const Contacts = () => {
+
   const [lcountries] = useState([
     { id: 1, name: "Makati", contact_num: "09171234567" },
     { id: 2, name: "Mandaluyong", contact_num: "09182345678" },
@@ -12,32 +13,51 @@ export const Contacts = () => {
     { id: 5, name: "Taguig", contact_num: "09215678901" },
   ]);
 
-  // ❗ no default selected
   const [selected, setSelected] = useState(null);
 
+  // 🔥 MODAL STATES
+  const [showModal, setShowModal] = useState(false);
+  const [actionType, setActionType] = useState("");
+  const [selectedData, setSelectedData] = useState(null);
+
+  // 🔥 SHAKE STATE
+  const [shake, setShake] = useState(false);
+
+  // 🔥 BUTTON HANDLER
   const btnHandler = (type) => {
-    // ✅ validation
     if (!selected) {
-      return alert("Please choose a city first");
+      setShake(true);
+
+      setTimeout(() => {
+        setShake(false);
+      }, 400);
+
+      return;
     }
 
-    const selectedData = lcountries.find(
-      (value) => value.id === selected
-    );
+    const data = lcountries.find((value) => value.id === selected);
+    if (!data) return;
 
-    if (!selectedData) return alert("Invalid selection");
+    setSelectedData(data);
+    setActionType(type);
+    setShowModal(true);
+  };
 
-    if (type === "call") {
-      alert(`Calling ${selectedData.name}: ${selectedData.contact_num}`);
-    } else if (type === "email") {
-      alert(`Sending SMS to ${selectedData.name}: ${selectedData.contact_num}`);
+  // 🔥 CONFIRM ACTION
+  const confirmAction = () => {
+    if (actionType === "call") {
+      window.location.href = `tel:${selectedData.contact_num}`;
     } else {
-      alert("Wrong value");
+      window.location.href = `sms:${selectedData.contact_num}`;
     }
+
+    setShowModal(false);
   };
 
   return (
     <div>
+
+      {/* HEADER */}
       <div className="home-container-1">
         <div><b>Covid-19</b></div>
 
@@ -45,11 +65,14 @@ export const Contacts = () => {
           lcountries={lcountries}
           selected={selected}
           setSelected={setSelected}
+          shake={shake}
         />
       </div>
 
+      {/* CONTACT CARD */}
       <div className="home-container-2">
         <div>Are you feeling sick?</div>
+
         <div>
           If you feel sick with any covid-19 symptoms please call or SMS us immediately for help
         </div>
@@ -65,13 +88,46 @@ export const Contacts = () => {
 
           <div
             className="icons"
-            onClick={() => btnHandler("email")}
+            onClick={() => btnHandler("sms")}
           >
             <img src={text} alt="icon" />
-            Send sms
+            Send SMS
           </div>
         </div>
       </div>
+
+      {/* 🔥 MODAL */}
+      {showModal && selectedData && (
+        <div className="confirm-modal" onClick={() => setShowModal(false)}>
+          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+
+            <div className="modal-icon">
+              {actionType === "call" ? "📞" : "💬"}
+            </div>
+
+            <div className="modal-title">
+              {actionType === "call" ? "Call Hotline?" : "Send SMS?"}
+            </div>
+
+            <div className="modal-sub">
+              {selectedData.name} <br />
+              {selectedData.contact_num}
+            </div>
+
+            <div className="modal-actions">
+              <button className="yes" onClick={confirmAction}>
+                Confirm
+              </button>
+
+              <button className="no" onClick={() => setShowModal(false)}>
+                Cancel
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

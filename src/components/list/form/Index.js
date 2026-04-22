@@ -14,36 +14,34 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
 
   const [showModal, setShowModal] = useState(false);
 
-  // 🔄 LOAD DATA IF EDIT MODE
+  // 🔄 LOAD DATA (EDIT MODE)
   useEffect(() => {
     if (realId) {
       const data = lcases.find((l) => l.id === realId);
 
       if (data) {
-        setForm((prev) => ({
-          ...prev,
+        setForm({
           method: "update",
           inputs: {
-            name: { value: data.name },
-            case: { value: data.case },
-            city: { value: data.city },
+            name: { value: data.name, stat: true, msg: "" },
+            case: { value: data.case, stat: true, msg: "" },
+            city: { value: data.city, stat: true, msg: "" },
           },
-        }));
+        });
       }
     } else {
-      setForm((prev) => ({
-        ...prev,
+      setForm({
         method: "create",
         inputs: {
-          name: { value: "" },
-          case: { value: "" },
-          city: { value: "" },
+          name: { value: "", stat: true, msg: "" },
+          case: { value: "", stat: true, msg: "" },
+          city: { value: "", stat: true, msg: "" },
         },
-      }));
+      });
     }
   }, [selected, lcases]);
 
-  // 📝 INPUT HANDLER
+  // 📝 INPUT HANDLER + LIVE VALIDATION
   const inputHandler = (e) => {
     const { name, value } = e.target;
 
@@ -51,13 +49,52 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
       ...prev,
       inputs: {
         ...prev.inputs,
-        [name]: { value },
+        [name]: {
+          value,
+          stat: value !== "",
+          msg: value === "" ? "This field is required" : "",
+        },
       },
     }));
   };
 
+  // ✅ VALIDATION FUNCTION
+  const validateForm = () => {
+    let valid = true;
+
+    const updatedInputs = { ...form.inputs };
+
+    Object.keys(updatedInputs).forEach((key) => {
+      if (updatedInputs[key].value === "") {
+        updatedInputs[key] = {
+          ...updatedInputs[key],
+          stat: false,
+          msg: "This field is required",
+        };
+        valid = false;
+      } else {
+        updatedInputs[key] = {
+          ...updatedInputs[key],
+          stat: true,
+          msg: "",
+        };
+      }
+    });
+
+    setForm((prev) => ({
+      ...prev,
+      inputs: updatedInputs,
+    }));
+
+    return valid;
+  };
+
   // MODAL
-  const openModal = () => setShowModal(true);
+  const openModal = () => {
+    if (!validateForm()) return; // ❌ BLOCK
+    setShowModal(true);
+  };
+
   const closeModal = () => setShowModal(false);
 
   // 💾 SAVE
@@ -81,6 +118,7 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
         ...lcases,
         {
           id: Date.now(),
+          date: new Date().toISOString(),
           name: form.inputs.name.value,
           case: Number(form.inputs.case.value),
           city: form.inputs.city.value,
@@ -92,9 +130,9 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
     setForm({
       method: "create",
       inputs: {
-        name: { value: "" },
-        case: { value: "" },
-        city: { value: "" },
+        name: { value: "", stat: true, msg: "" },
+        case: { value: "", stat: true, msg: "" },
+        city: { value: "", stat: true, msg: "" },
       },
     });
 
@@ -113,6 +151,7 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
       {/* FORM */}
       <div className="form-container-2">
 
+        {/* NAME */}
         <div>
           <label>Complete Name</label>
           <input
@@ -120,15 +159,21 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
             name="name"
             value={form.inputs.name.value}
             onChange={inputHandler}
+            className={!form.inputs.name.stat ? "error-input" : ""}
           />
+          {!form.inputs.name.stat && (
+            <span className="error-text">{form.inputs.name.msg}</span>
+          )}
         </div>
 
+        {/* CASE */}
         <div>
           <label>Case</label>
           <select
             name="case"
             value={form.inputs.case.value}
             onChange={inputHandler}
+            className={!form.inputs.case.stat ? "error-input" : ""}
           >
             <option value="">Select Case</option>
             <option value="1">Affected</option>
@@ -137,14 +182,20 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
             <option value="4">Active</option>
             <option value="5">Serious</option>
           </select>
+
+          {!form.inputs.case.stat && (
+            <span className="error-text">{form.inputs.case.msg}</span>
+          )}
         </div>
 
+        {/* CITY */}
         <div>
           <label>City</label>
           <select
             name="city"
             value={form.inputs.city.value}
             onChange={inputHandler}
+            className={!form.inputs.city.stat ? "error-input" : ""}
           >
             <option value="">Select City</option>
             <option value="Makati">Makati</option>
@@ -153,6 +204,10 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
             <option value="Pasig">Pasig</option>
             <option value="Taguig">Taguig</option>
           </select>
+
+          {!form.inputs.city.stat && (
+            <span className="error-text">{form.inputs.city.msg}</span>
+          )}
         </div>
 
         <button onClick={openModal}>Save Case</button>
@@ -160,20 +215,24 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
 
       {/* MODAL */}
       {showModal && (
-        <div className="confirm-modal" onClick={closeModal}>
-          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+         <div className="confirm-modal" onClick={closeModal}>
+    <div className="modal-box" onClick={(e) => e.stopPropagation()}>
 
-            <div className="modal-title">Save this case?</div>
+       <div className="modal-icon">⚠️</div>
 
-            <div className="modal-actions">
-              <button className="yes" onClick={confirmSave}>
-                Yes
-              </button>
-              <button className="no" onClick={closeModal}>
-                No
-              </button>
+         <div className="modal-title">Confirm Save</div>
+            <div className="modal-sub">
+                Are you sure you want to save this case?
             </div>
 
+                <div className="modal-actions">
+                   <button className="yes" onClick={confirmSave}>
+                    Yes
+                 </button>
+                 <button className="no" onClick={closeModal}>
+                  Cancel
+              </button>
+          </div>
           </div>
         </div>
       )}

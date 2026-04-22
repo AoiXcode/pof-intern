@@ -46,9 +46,9 @@ const Core = () => {
       <Router>
         <Switch>
 
-          <Route exact path="/" render={(v) => <Home {...v} />} />
+          <Route exact path="/" render={(v) => <Home {...v} lcases={lcases}/>} />
 
-          <Route exact path="/statistics" render={(v) => <Statistics {...v} />} />
+          <Route exact path="/statistics" render={(v) => <Statistics {...v} lcases={lcases}/>} />
 
           <Route
             exact

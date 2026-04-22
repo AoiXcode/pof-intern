@@ -1,39 +1,41 @@
 import "../../../assets/css/countries.css";
 import { useState } from "react";
 
-export const Countries = ({ lcountries, selected, setSelected }) => {
-  const [view, setView] = useState(false);
+export const Countries = ({ lcountries, selected, setSelected, shake }) => {
+  const [open, setOpen] = useState(false);
 
   return (
-    <div className="countries-wrapper">
+    <div className={`countries-wrapper ${shake ? "shake" : ""}`}>
+
       {/* Selected */}
       <div
         className="countries"
-        onClick={() => setView(!view)}
+        onClick={() => setOpen(!open)}
       >
-        {lcountries.find((c) => c.id === selected)?.name || "Select City"}
+        {selected
+          ? lcountries.find((c) => c.id === selected)?.name
+          : "Select City"}
         <span className="arrow">▼</span>
       </div>
 
       {/* Dropdown */}
-      {view && (
+      {open && (
         <div className="dropdown">
-          {lcountries.map((v) => (
+          {lcountries.map((c) => (
             <div
-              key={v.id}
-              className={`dropdown-item ${
-                selected === v.id ? "active" : ""
-              }`}
+              key={c.id}
+              className={`dropdown-item ${selected === c.id ? "active" : ""}`}
               onClick={() => {
-                setSelected(v.id);
-                setView(false);
+                setSelected(c.id);
+                setOpen(false);
               }}
             >
-              {v.name}
+              {c.name}
             </div>
           ))}
         </div>
       )}
+
     </div>
   );
 };
