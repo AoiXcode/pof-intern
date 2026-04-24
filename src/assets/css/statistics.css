@@ -204,3 +204,82 @@
   -ms-overflow-style: none;  /* IE/Edge */
   scrollbar-width: none;     /* Firefox */
 }
+/* TOP SECTION (purple container shape) */
+.skeleton-top-section {
+  padding: 15px;
+  border-radius: 20px;
+}
+
+/* TOP BAR */
+.skeleton-topbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.skeleton-icon {
+  width: 28px;
+  height: 28px;
+}
+
+/* TITLE */
+.skeleton-title {
+  width: 120px;
+  height: 18px;
+  margin: 10px 0;
+}
+
+/* TOGGLE */
+.skeleton-toggle {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.skeleton-pill {
+  width: 100px;
+  height: 35px;
+  border-radius: 20px;
+}
+
+/* TABS */
+.skeleton-tabs-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.skeleton-tab {
+  width: 80px;
+  height: 30px;
+  border-radius: 15px;
+}
+
+/* SUMMARY */
+.skeleton-summary {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.skeleton-summary.small {
+  justify-content: space-between;
+}
+
+.skeleton-big-card {
+  flex: 1;
+  height: 90px;
+  border-radius: 15px;
+}
+
+.skeleton-small-card {
+  width: 30%;
+  height: 70px;
+  border-radius: 15px;
+}
+
+/* GRAPH */
+.skeleton-graph-card {
+  height: 220px;
+  border-radius: 15px;
+}

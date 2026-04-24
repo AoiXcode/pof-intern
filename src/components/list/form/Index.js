@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Bottom } from "../../navigations/Bottom";
 import { useHistory } from "react-router-dom";
 
-// ✅ Decode ID
+// Decode ID
 const decodeId = (id) => Number(atob(id));
 
 export const Form = ({ match, form, setForm, lcases, setLcases }) => {
@@ -14,7 +14,14 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
 
   const [showModal, setShowModal] = useState(false);
 
-  // 🔄 LOAD DATA (EDIT MODE)
+  // 🔥 LOADING + PROGRESS
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  // 🔥 TOAST
+  const [toast, setToast] = useState({ show: false, message: "" });
+
+  // LOAD DATA (EDIT MODE)
   useEffect(() => {
     if (realId) {
       const data = lcases.find((l) => l.id === realId);
@@ -41,7 +48,7 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
     }
   }, [selected, lcases]);
 
-  // 📝 INPUT HANDLER + LIVE VALIDATION
+  // INPUT
   const inputHandler = (e) => {
     const { name, value } = e.target;
 
@@ -58,10 +65,9 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
     }));
   };
 
-  // ✅ VALIDATION FUNCTION
+  // VALIDATE
   const validateForm = () => {
     let valid = true;
-
     const updatedInputs = { ...form.inputs };
 
     Object.keys(updatedInputs).forEach((key) => {
@@ -89,59 +95,103 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
     return valid;
   };
 
-  // MODAL
+  // OPEN MODAL
   const openModal = () => {
-    if (!validateForm()) return; // ❌ BLOCK
+    if (!validateForm()) return;
     setShowModal(true);
   };
 
-  const closeModal = () => setShowModal(false);
+  const closeModal = () => {
+    if (!loading) setShowModal(false);
+  };
 
-  // 💾 SAVE
+  // 💾 SAVE WITH LOADING + TOAST
   const confirmSave = () => {
+    setLoading(true);
+    setProgress(0);
 
-    if (form.method === "update") {
-      const updated = lcases.map((item) =>
-        item.id === realId
-          ? {
-              ...item,
+    let fakeProgress = 0;
+
+    const interval = setInterval(() => {
+      fakeProgress += 20;
+      setProgress(fakeProgress);
+
+      if (fakeProgress >= 100) {
+        clearInterval(interval);
+
+        setTimeout(() => {
+
+          // SAVE LOGIC
+          if (form.method === "update") {
+            const updated = lcases.map((item) =>
+              item.id === realId
+                ? {
+                    ...item,
+                    name: form.inputs.name.value,
+                    case: Number(form.inputs.case.value),
+                    city: form.inputs.city.value,
+                  }
+                : item
+            );
+
+            setLcases(updated);
+          } else {
+            const newCase = {
+              id: Date.now(),
+              date: new Date().toISOString(),
               name: form.inputs.name.value,
               case: Number(form.inputs.case.value),
               city: form.inputs.city.value,
-            }
-          : item
-      );
+            };
 
-      setLcases(updated);
-    } else {
-      setLcases([
-        ...lcases,
-        {
-          id: Date.now(),
-          date: new Date().toISOString(),
-          name: form.inputs.name.value,
-          case: Number(form.inputs.case.value),
-          city: form.inputs.city.value,
-        },
-      ]);
-    }
+            setLcases([newCase, ...lcases]); // 🔥 NEW FIRST
+          }
 
-    // 🔄 RESET FORM
-    setForm({
-      method: "create",
-      inputs: {
-        name: { value: "", stat: true, msg: "" },
-        case: { value: "", stat: true, msg: "" },
-        city: { value: "", stat: true, msg: "" },
-      },
-    });
+          // RESET FORM
+          setForm({
+            method: "create",
+            inputs: {
+              name: { value: "", stat: true, msg: "" },
+              case: { value: "", stat: true, msg: "" },
+              city: { value: "", stat: true, msg: "" },
+            },
+          });
 
-    setShowModal(false);
-    history.push("/list");
+          setLoading(false);
+          setShowModal(false);
+
+          // 🔥 TOAST SUCCESS
+          setToast({
+            show: true,
+            message: "Case saved successfully!"
+          });
+
+          setTimeout(() => {
+            setToast({ show: false, message: "" });
+          }, 2000);
+
+          // REFRESH LIST TRIGGER
+          history.push("/list?reload=true");
+
+        }, 500);
+      }
+    }, 300);
   };
 
   return (
     <div className="form-main-container">
+      {loading && (
+        <div className="global-loader">
+        <div className="spinner"></div>
+            <p>Saving case...</p>
+      </div>
+        )}
+      {/* TOAST */}
+      {toast.show && (
+        <div className="toast">
+          {toast.message}
+        </div>
+      )}
 
       {/* TITLE */}
       <div className="form-container-1">
@@ -151,7 +201,6 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
       {/* FORM */}
       <div className="form-container-2">
 
-        {/* NAME */}
         <div>
           <label>Complete Name</label>
           <input
@@ -166,7 +215,6 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
           )}
         </div>
 
-        {/* CASE */}
         <div>
           <label>Case</label>
           <select
@@ -182,13 +230,8 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
             <option value="4">Active</option>
             <option value="5">Serious</option>
           </select>
-
-          {!form.inputs.case.stat && (
-            <span className="error-text">{form.inputs.case.msg}</span>
-          )}
         </div>
 
-        {/* CITY */}
         <div>
           <label>City</label>
           <select
@@ -204,35 +247,43 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
             <option value="Pasig">Pasig</option>
             <option value="Taguig">Taguig</option>
           </select>
-
-          {!form.inputs.city.stat && (
-            <span className="error-text">{form.inputs.city.msg}</span>
-          )}
         </div>
 
-        <button onClick={openModal}>Save Case</button>
+        <button onClick={openModal}>
+          Save Case
+        </button>
       </div>
 
       {/* MODAL */}
       {showModal && (
-         <div className="confirm-modal" onClick={closeModal}>
-    <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+        <div className="confirm-modal" onClick={closeModal}>
+          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
 
-       <div className="modal-icon">⚠️</div>
+            <div className="modal-title">Confirm Save</div>
 
-         <div className="modal-title">Confirm Save</div>
             <div className="modal-sub">
-                Are you sure you want to save this case?
+              Are you sure you want to save this case?
             </div>
 
-                <div className="modal-actions">
-                   <button className="yes" onClick={confirmSave}>
-                    Yes
-                 </button>
-                 <button className="no" onClick={closeModal}>
-                  Cancel
+
+            <div className="modal-actions">
+              <button
+                className="yes"
+                onClick={confirmSave}
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Yes"}
               </button>
-          </div>
+
+              <button
+                className="no"
+                onClick={closeModal}
+                disabled={loading}
+              >
+                Cancel
+              </button>
+            </div>
+
           </div>
         </div>
       )}

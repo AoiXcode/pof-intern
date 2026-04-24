@@ -4,6 +4,7 @@
   background: #f5f6fa;
   min-height: 100vh;
   font-family: Arial, sans-serif;
+  padding-bottom: 80px;
 }
 
 /* ADD BUTTON */
@@ -33,6 +34,7 @@
 .list-container-2 {
   display: flex;
   flex-direction: column;
+  /* padding: 10px 15px 80px;  */
 }
 
 /* DATA */
@@ -134,33 +136,11 @@
   position: relative;
 }
 
-
-/* MODAL BACKDROP */
-.confirm-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.4);
-
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-
 /* ================= MODAL BACKDROP ================= */
 .confirm-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background: rgba(0,0,0,0.5);
   backdrop-filter: blur(6px);
 
   display: flex;
@@ -168,37 +148,29 @@
   align-items: center;
 
   z-index: 999;
-
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.25s ease;
 }
 
 /* ================= MODAL BOX ================= */
 .modal-box {
   width: 85%;
   max-width: 320px;
+  background: #fff;
 
-  background: white;
-  border-radius: 20px;
+  border-radius: 18px;
   padding: 20px;
 
   text-align: center;
 
   box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-
-  animation: slideUp 0.35s ease;
-}
-
-/* ICON (optional but 🔥) */
-.modal-icon {
-  font-size: 40px;
-  margin-bottom: 10px;
+  animation: slideUp 0.3s ease;
 }
 
 /* TITLE */
 .modal-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: #333;
 }
 
@@ -206,53 +178,96 @@
 .modal-sub {
   font-size: 13px;
   color: #777;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
-/* BUTTON GROUP */
-.modal-actions {
-  display: flex;
-  gap: 10px;
-}
-
-/* BUTTON BASE */
-.modal-actions button {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-/* YES BUTTON */
-.modal-actions .yes {
-  background: linear-gradient(135deg, #5a54c7, #6c63ff);
-  color: white;
-  box-shadow: 0 5px 15px rgba(90,84,199,0.3);
-}
-
-/* NO BUTTON */
-.modal-actions .no {
-  background: #f1f1f1;
-  color: #555;
-}
-
-/* PRESS EFFECT */
-.modal-actions button:active {
-  transform: scale(0.95);
-}
-/* FIX INPUT OVERFLOW */
+/* ================= INPUTS INSIDE MODAL ================= */
 .modal-box input,
 .modal-box select {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
+
   border-radius: 10px;
   border: 1px solid #ddd;
 
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  outline: none;
+}
+
+/* ================= BUTTON GROUP ================= */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* BASE BUTTON */
+.modal-actions button {
+  flex: 1;
+  padding: 12px;
+
+  border: none;
+  border-radius: 12px;
+
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* PRIMARY (SAVE / YES) */
+.modal-actions .yes,
+.modal-actions button:first-child {
+  background: linear-gradient(135deg, #5a54c7, #6c63ff);
+  color: white;
+}
+
+/* CANCEL */
+.modal-actions .no {
+  background: #e0e0e0;
+  color: #333;
+}
+
+/* DELETE */
+.modal-actions .danger {
+  background: #ff5e57;
+  color: white;
+}
+
+/* DISABLED STATE (IMPORTANT FOR YOUR LOCK FEATURE) */
+.modal-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* CLICK EFFECT */
+.modal-actions button:active {
+  transform: scale(0.95);
+}
+
+/* ================= LOCK STATE ================= */
+/* ================= LOCKED STATE ================= */
+.is-locking {
+  cursor: not-allowed;
+}
+
+/* ================= BUTTON DISABLED HARD BLOCK ================= */
+.modal-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* CANCEL BUTTON EXTRA SAFETY */
+.modal-actions .no:disabled {
+  background: #ccc !important;
+  color: #888 !important;
+}
+
+/* PREVENT HOVER EFFECT WHEN DISABLED */
+.modal-actions button:disabled:hover {
+  transform: none;
 }
 
 /* ================= ANIMATIONS ================= */
@@ -263,7 +278,7 @@
 
 @keyframes slideUp {
   from {
-    transform: translateY(40px);
+    transform: translateY(30px);
     opacity: 0;
   }
   to {
@@ -271,71 +286,6 @@
     opacity: 1;
   }
 }
-/* ================= MODAL DELETE ================= */
-/* BACKDROP (same as your existing one, but cleaner) */
-.confirm-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  z-index: 999;
-}
-
-/* MODAL BOX */
-.modal-box {
-  width: 85%;
-  max-width: 320px;
-
-  background: #fff;
-  border-radius: 18px;
-  padding: 20px;
-
-  text-align: center;
-
-  animation: pop 0.2s ease;
-}
-
-/* TITLE */
-.modal-title {
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 15px;
-  color: #333;
-}
-
-/* BUTTONS */
-.modal-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.modal-actions button {
-  flex: 1;
-  padding: 10px;
-
-  border: none;
-  border-radius: 12px;
-
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* CANCEL */
-.modal-actions .no {
-  background: #e0e0e0;
-  color: #333;
-}
-
-/* DELETE */
-.modal-actions .yes.danger {
-  background: #ff5e57;
-  color: white;
-}
-
 /* ANIMATION */
 @keyframes pop {
   from {
@@ -393,28 +343,67 @@
 }
 /* 🔍 SEARCH + FILTER */
 .list-controls {
-  display: flex;
-  gap: 10px;
   margin-bottom: 12px;
 }
 
-.list-controls input,
-.list-controls select {
-  flex: 1;
-  padding: 10px;
-  border-radius: 12px;
+/* SEARCH ONLY */
+.list-controls input {
+  width: 100%; /* keep search full width */
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 10px;
   border: 1px solid #ddd;
   font-size: 13px;
   outline: none;
   background: white;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
-.list-controls input:focus,
-.list-controls select:focus {
+/* SEARCH FOCUS/HOVER */
+.list-controls input:focus {
   border-color: #5a54c7;
-  box-shadow: 0 0 0 2px rgba(90,84,199,0.15);
+  box-shadow: 0 0 0 3px rgba(90, 84, 199, 0.12);
 }
 
+.list-controls input:hover {
+  border-color: #bbb;
+}
+
+/* 🔥 FILTER ROW ONLY (CASE + CITY) */
+.filter-row {
+  display: flex;
+  justify-content: space-between; /* THIS is what you want */
+  gap: 12px; /* remove 150px, it's too forced */
+  margin-top: 10px;
+}
+
+/* dropdown styles */
+.filter-row select {
+  flex: 1;
+  min-width: 160px;
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 13px;
+  outline: none;
+  background: white;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+/* focus */
+.filter-row select:focus {
+  border-color: #5a54c7;
+  box-shadow: 0 0 0 3px rgba(90, 84, 199, 0.12);
+}
+
+/* hover */
+.filter-row select:hover {
+  border-color: #bbb;
+}
 /* EMPTY STATE */
 .empty-state {
   text-align: center;
@@ -569,3 +558,256 @@
   }
 }
 
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* ================= GLOBAL LOADER ================= */
+.global-loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* SPINNER */
+.spinner {
+  width: 45px;
+  height: 45px;
+  border: 4px solid rgba(255,255,255,0.3);
+  border-top: 4px solid #6c63ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+/* ================= SKELETON ================= */
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  height: 70px;
+  border-radius: 12px;
+}
+
+/* LEFT TEXT */
+.skeleton-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.skeleton-text {
+  width: 120px;
+  height: 12px;
+}
+
+.skeleton-text.small {
+  width: 80px;
+}
+
+/* BADGE */
+.skeleton-badge {
+  width: 70px;
+  height: 20px;
+  border-radius: 10px;
+}
+
+/* ACTIONS */
+.skeleton-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.skeleton-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* PAGE */
+.page-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 10px;
+}
+
+/* BUTTON */
+.skeleton-button {
+  width: 120px;
+  height: 40px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  align-self: flex-end;
+}
+
+/* FILTERS WRAPPER */
+.skeleton-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* SEARCH */
+.skeleton-input {
+  width: 100%;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+/* FILTER ROW (CASE + CITY) */
+.skeleton-filter-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* DROPDOWNS */
+.skeleton-select {
+  flex: 1;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+/* SEARCH FULL WIDTH */
+.skeleton-input {
+  width: 100%;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+/* FILTER ROW (CASE + CITY) */
+.skeleton-filter-row {
+  display: flex;
+  justify-content: space-between; /* 🔥 key requirement */
+  gap: 12px;
+}
+
+
+
+/* ================= LIST SKELETON FIX ================= */
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeleton-card {
+  height: 70px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+/* ADD SHIMMER EFFECT */
+.skeleton-button,
+.skeleton-input {
+  background: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ================= LOCK STATE ================= */
+.locked {
+  pointer-events: none !important;
+  opacity: 0.6;
+  user-select: none;
+}
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #4b4ba6;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 25px;
+  font-size: 13px;
+  z-index: 9999;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+/* 🔄 FULL SCREEN LOADING OVERLAY */
+.refresh-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+  color: white;
+}
+
+.spinner {
+  width: 45px;
+  height: 45px;
+  border: 4px solid #ddd;
+  border-top: 4px solid #6c63ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.locked {
+  pointer-events: none !important;
+  opacity: 0.6;
+  user-select: none;
+}

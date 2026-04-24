@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bottom } from "../navigations/Bottom";
 import { Top } from "../navigations/Top";
 import Summary from "./Summary";
@@ -7,85 +7,133 @@ import "../../assets/css/statistics.css";
 
 export const Statistics = ({ lcases = [] }) => {
 
-  // ✅ STATE FIRST
   const [activeTab, setActiveTab] = useState("total");
+  const [isLoading, setIsLoading] = useState(true);
 
-  // ✅ FILTER FUNCTION
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
   const filterData = () => {
     const today = new Date();
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
 
     return lcases.filter((item) => {
-      // 🔥 fallback if no date
       const itemDate = item.date
         ? new Date(item.date).toDateString()
         : new Date(item.id).toDateString();
 
-      if (activeTab === "today") {
-        return itemDate === today.toDateString();
-      }
+      if (activeTab === "today") return itemDate === today.toDateString();
+      if (activeTab === "yesterday") return itemDate === yesterday.toDateString();
 
-      if (activeTab === "yesterday") {
-        return itemDate === yesterday.toDateString();
-      }
-
-      return true; // total
+      return true;
     });
   };
 
-  // ✅ CALL AFTER FUNCTION + STATE
   const filteredCases = filterData();
 
   return (
     <div className="statistics-page">
 
-      <div className="top-section">
-        <Top />
+      {isLoading ? (
+  <div className="page-skeleton">
 
-        <h2 className="title">Statistics</h2>
+    {/* TOP PURPLE SECTION */}
+    <div className="skeleton skeleton-top-section">
 
-        <div className="toggle">
-          <button className="active">My City</button>
-          <button>Global</button>
-        </div>
+      {/* Top bar */}
+      <div className="skeleton-topbar">
+        <div className="skeleton skeleton-icon"></div>
+        <div className="skeleton skeleton-icon"></div>
+      </div>
 
-        {/* TABS */}
-        <div className="swipe-tabs-wrapper">
-          <div className="swipe-tabs">
+      {/* Title */}
+      <div className="skeleton skeleton-title"></div>
 
-            <div
-              className={`tab ${activeTab === "total" ? "active" : ""}`}
-              onClick={() => setActiveTab("total")}
-            >
-              Total
+      {/* Toggle */}
+      <div className="skeleton-toggle">
+        <div className="skeleton skeleton-pill"></div>
+        <div className="skeleton skeleton-pill"></div>
+      </div>
+
+      {/* Tabs */}
+      <div className="skeleton-tabs-row">
+        <div className="skeleton skeleton-tab"></div>
+        <div className="skeleton skeleton-tab"></div>
+        <div className="skeleton skeleton-tab"></div>
+      </div>
+
+      {/* SUMMARY CARDS */}
+      <div className="skeleton-summary">
+        <div className="skeleton skeleton-big-card"></div>
+        <div className="skeleton skeleton-big-card"></div>
+      </div>
+
+      <div className="skeleton-summary small">
+        <div className="skeleton skeleton-small-card"></div>
+        <div className="skeleton skeleton-small-card"></div>
+        <div className="skeleton skeleton-small-card"></div>
+      </div>
+
+    </div>
+
+    {/* GRAPH SECTION */}
+    <div className="skeleton skeleton-graph-card"></div>
+
+  </div>
+) : (
+        <>
+          <div className="top-section">
+            <Top />
+
+            <h2 className="title">Statistics</h2>
+
+            <div className="toggle">
+              <button className="active">My City</button>
+              <button>Global</button>
             </div>
 
-            <div
-              className={`tab ${activeTab === "today" ? "active" : ""}`}
-              onClick={() => setActiveTab("today")}
-            >
-              Today
+            <div className="swipe-tabs-wrapper">
+              <div className="swipe-tabs">
+
+                <div
+                  className={`tab ${activeTab === "total" ? "active" : ""}`}
+                  onClick={() => setActiveTab("total")}
+                >
+                  Total
+                </div>
+
+                <div
+                  className={`tab ${activeTab === "today" ? "active" : ""}`}
+                  onClick={() => setActiveTab("today")}
+                >
+                  Today
+                </div>
+
+                <div
+                  className={`tab ${activeTab === "yesterday" ? "active" : ""}`}
+                  onClick={() => setActiveTab("yesterday")}
+                >
+                  Yesterday
+                </div>
+
+              </div>
             </div>
 
-            <div
-              className={`tab ${activeTab === "yesterday" ? "active" : ""}`}
-              onClick={() => setActiveTab("yesterday")}
-            >
-              Yesterday
-            </div>
-
+            <Summary lcases={filteredCases} />
           </div>
-        </div>
 
-        <Summary lcases={filteredCases} />
-      </div>
+          <div className="bottom-section">
+            <DailyGraph lcases={filteredCases} />
+          </div>
 
-      <div className="bottom-section">
-        <DailyGraph lcases={filteredCases} />
-      </div>
+          <Bottom />
+        </>
+      )}
 
-      <Bottom />
     </div>
   );
 };
