@@ -16,7 +16,7 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
 
   // 🔥 LOADING + PROGRESS
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [ setProgress] = useState(0);
 
   // 🔥 TOAST
   const [toast, setToast] = useState({ show: false, message: "" });
@@ -46,7 +46,7 @@ export const Form = ({ match, form, setForm, lcases, setLcases }) => {
         },
       });
     }
-  }, [selected, lcases]);
+  }, [selected,realId, lcases, setForm]);
 
   // INPUT
   const inputHandler = (e) => {
