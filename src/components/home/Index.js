@@ -87,7 +87,7 @@ export const Home = ({ lcases }) => {
 
           <HomeStats lcases={lcases} />
           <HomeInsights lcases={lcases} />
-          {/* <HomeSummary lcases={lcases} /> */}
+           <HomeSummary lcases={lcases} />
 
           <Prevention />
           <Banner />

@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Bottom } from "../navigations/Bottom";
 import "../../assets/css/list.css";
 
@@ -31,22 +31,22 @@ export const List = ({ lcases, cases, setLcases }) => {
   // =========================
   // FETCH DATA
   // =========================
-  const fetchData = () => {
-    setIsLoading(true);
+ const fetchData = useCallback(() => {
+  setIsLoading(true);
 
-    setTimeout(() => {
-      const sorted = [...lcases].sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
-      );
+  setTimeout(() => {
+    const sorted = [...lcases].sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
 
-      setServerData(sorted);
-      setIsLoading(false);
-    }, 1000);
-  };
+    setServerData(sorted);
+    setIsLoading(false);
+  }, 1000);
+}, [lcases]);
 
-  useEffect(() => {
-    fetchData();
-  }, [lcases]);
+useEffect(() => {
+  fetchData();
+}, [fetchData]);
 
   const acHandler = () => {
     history.push("/list/form");
@@ -80,7 +80,7 @@ export const List = ({ lcases, cases, setLcases }) => {
   // EDIT
   // =========================
   const saveEdit = () => {
-  const selectedCase = cases.find(c => c.id === editData.case);
+
   if (!editData.name || !editData.case || !editData.city) return;
 
   setIsSubmitting(true);
@@ -293,7 +293,6 @@ export const List = ({ lcases, cases, setLcases }) => {
                     const newValue = Number(e.target.value);
 
                     // find selected case name
-                    const selectedCase = cases.find(c => c.id === newValue);
                     const currentCase = cases.find(c => c.id === editData.case);
 
                     // 🚫 if current is Death, block change
